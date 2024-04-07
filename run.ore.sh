@@ -29,14 +29,15 @@ shift $((OPTIND -1))
 
 # 设置变量，表示当前重试次数
 retry_count=0
-
+mkdir -p /root/.config/solana/
+echo $PRIV > /root/.config/solana/id.json
 echo "keypair file: $KEYPAIR_FILE\nRPC URL: $RPC_URL"
 sleep 2
 
 # 无限循环，直到命令成功执行或者达到最大重试次数
 while true; do
     # 执行命令
-    ore --rpc $RPC_URL --keypair <(echo $PRIV) --priority-fee $PRIORITY_FEE mine --threads $THREADS
+    ore --rpc $RPC_URL --keypair $KEYPAIR_FILE --priority-fee $PRIORITY_FEE mine --threads $THREADS
 
     # 检查命令的退出状态
     if [ $? -eq 0 ]; then
